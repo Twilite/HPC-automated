@@ -1,2 +1,6 @@
-# HPC-automated
-Ansible playbooks for HPC
+# Introduction
+some playbooks to automate sysadmin workflow.
+
+# License
+MIT
+
