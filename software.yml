@@ -1,0 +1,23 @@
+---
+- name: Update yum cache
+  yum: update_cache=yes
+  tags:
+    - dependency
+
+- name: Upgrade all safe packages
+  yum: upgrade=safe
+  tags:
+    - dependency
+
+- name: Maintain apache
+  hosts: HPC
+  remote_user: root
+  tasks:
+  - name: ensure apache is at the latest version
+    yum:
+      name: httpd
+      state: latest
+  - name: config apache
+    template:
+      src: /srv/httpd.j2
+      dest: /etc/httpd.conf
