@@ -1,0 +1,68 @@
+---
+- name: chronyd conf
+  hosts: infra01
+  remote_user: root
+  roles:
+    - frzk.chrony
+  vars: 
+    chrony_service_name: chronyd
+    chrony_timezone: Asia/Shanghai
+    chrony_ntp_pools: []
+    chrony_ntp_servers:
+      - 0.rhel.pool.ntp.org iburst maxpoll 10  
+    chrony_config_file: /etc/chrony.conf
+    chrony_config_driftfile: /var/lib/chrony/drift
+    chrony_makestep_threshold: 5
+    chrony_makestep_limit: 3
+
+- name: Ensure infra01 service running and enabled
+  hosts: infra01
+  remote_user: root
+  tasks:
+  - name: chrony
+    service:
+      name: chronyd
+      state: started
+      enabled: yes
+  - name: apache
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+  - name: dnsmasq
+    service:
+      name: dnsmasq
+      state: started
+      enabled: yes
+
+- name: Ensure nfs01 running and enabled
+  hosts: nfs01
+  tasks:
+  - service:
+      name: rpcbind, nfs-server, nfs-lock, nfs-idmap
+      state: started
+      enabled: yes
+
+- name: Ensure slapd running and enabled
+  hosts: ldap01
+  tasks:
+  - service:
+      name: slapd
+      state: started
+      enabled: yes
+
+- name: Ensure slurm master running
+  hosts: slurm01
+  tasks:
+  - service:
+      name: slurmctld
+      state: started
+      enabled: yes
+
+- name: check node service
+  hosts: node
+  tasks:
+  - service: 
+      name: slurmd
+      stste: started
+      enabled: yes

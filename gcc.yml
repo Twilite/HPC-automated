@@ -1,0 +1,14 @@
+---
+- name: Check gcc version 
+  when: 
+  tags: consistency
+
+- name: Downgrade gcc
+  package: name={{ gcc_pkg }} state=present allow_downgrade=true
+  when: ansible_facts.packages['dns'][0].version > {{ gcc_pkg }}
+  tags: brk-dependency
+
+- name: Upgrade dnsmasq
+  package: name={{ dns_pkg }} state=present allow_downgrade=false
+  when: ansible_facts.packages['dns'][0].version < {{ gcc_pkg }}
+  tags: upgrade

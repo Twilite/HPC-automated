@@ -1,0 +1,73 @@
+---
+- name: Prep for all
+  hosts: all
+  fork: 10
+  become: 
+  vars:
+    ver_chrony: 3.4
+    ver_nfs: 1.3.0
+    ver_ldapc: 2.4.44
+  tasks:
+  - package_facts: {}
+  - name: List chrony ver
+    debug:
+      msg: "chrony: {{ ansible_facts.packages['chrony'][0].version }}"
+    when: ansible_facts.packages['chrony'][0].version != "3.4"
+  - name: Install chrony
+    yum:
+      allow_downgrade: yes
+      update_cache: yes
+      name: chrony-{{ ver_chrony }}
+      state: present
+  - name: List nfs-utils ver
+    debug:
+      msg: "nfs-utils: {{ ansible_facts.packages['nfs-utils'][0].version }}"
+    when: ansible_facts.packages['nfs-utils'][0].version != "{{ ver_nfs }}"
+  - name: Install NFS
+    yum:
+      allow_downgrade: yes
+      name: nfs-utils-{{ ver_nfs }}
+      state: present
+  - name: List openldap ver
+    debug:
+      msg: "openldap-clients: {{ ansible_facts.packages['openldap-clients'][0].version }}"
+    when: ansible_facts.packages['openldap-clients'][0].version != "{{ ver_ldapc }}"
+  - name: Install openldap
+    yum: 
+      allow_downgrade: yes
+      name: openldap-clients-{{ ver_ldapc }}
+      state: present
+
+- name: Prep ldap01
+  hosts: ldap01
+  remote_user: root
+  tasks:
+  - yum:
+      allow_downgrade: yes
+      name: openldap-servers-2.4.44
+      state: present
+
+- name: Prep infra01
+  hosts: infra01
+  remote_user: root
+  tasks:
+  - name: Install dnsmasq
+    yum: 
+      allow_downgrade: yes
+      name: dnsmasq-2.76
+      state: present
+  - name: Install apache
+    yum: 
+      allow_downgrade: yes
+      name: httpd-2.4.6
+      state: present
+
+- name: Prep login01
+  hosts: login01
+  remote_user: root
+  tasks:
+  - name: Install gcc
+    yum: 
+      allow_downgrade: yes
+      name: gcc-c++-4.8.5
+      state: present

@@ -1,0 +1,53 @@
+---
+- name: Check chrony version 
+  when: 
+  tags: consistency
+
+- name: Install chrony
+  package: name={{ chrony_pkg }} state=present
+  when: 
+  tags: dependency
+
+- name: Reinstall chrony
+  package: name={{ chrony_pkg }} state=present
+  when: 
+  tags: refresh
+
+- name: Downgrade chrony
+  package: name={{ chrony_pkg }} state=present allow_downgrade=true
+  when: ansible_facts.packages['chrony'][0].version > {{ chrony_pkg }}
+  tags: brk-dependency
+
+- name: Upgrade chrony
+  package: name={{ chrony_pkg }} state=present allow_downgrade=false
+  when: ansible_facts.packages['chrony'][0].version < {{ chrony_pkg }}
+  tags: upgrade
+
+- name: Ensure chrony up and enabled
+  systemd: name=chronyd state=started enabled=yes
+  tags: up-service
+
+- name: Configure chronyd
+  roles:
+    - frzk.chrony
+  vars: 
+    chrony_service_name: chronyd
+    chrony_timezone: Asia/Shanghai
+    chrony_ntp_pools: []
+    chrony_ntp_servers:
+      - 0.cn.pool.ntp.org iburst maxpoll 10  
+    chrony_config_file: /etc/chrony.conf
+    chrony_config_driftfile: /var/lib/chrony/drift
+    chrony_makestep_threshold: 5
+    chrony_makestep_limit: 3
+  tags: soft-conf
+
+- name: Configure chronyc
+  roles:
+    - frzk.chrony
+  vars:   
+    chrony_config_file: /etc/chrony.conf
+    chrony_config_driftfile: /var/lib/chrony/drift
+    chrony_makestep_threshold: 5
+    chrony_makestep_limit: 3
+  tags: soft-conf

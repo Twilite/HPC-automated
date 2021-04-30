@@ -1,0 +1,20 @@
+---
+- name: conf DNS
+  hosts: ldap01
+  tasks:
+    - name: Restart systemd-resolved to unbind port 53
+      systemd:
+        state: restarted
+        daemon_reload: yes
+        name: systemd-resolved
+
+    - name: Remove current /etc/resolv.conf
+      file:
+        path: /etc/resolv.conf
+        state: absent
+
+    - name: Set temporary nameserver
+      copy:
+        dest: /etc/resolv.conf
+        content: nameserver 192.168.0.5
+        mode: "0644"  

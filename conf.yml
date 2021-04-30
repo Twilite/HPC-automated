@@ -1,0 +1,7 @@
+---
+chrony_path: /etc/chrony
+dns_path: /etc/dns_path
+httpd_path: /etc/httpd
+ldapc_path: /etc/ldap
+ldaps_path: /etc/ldap
+gcc_path: /etc/gcc
