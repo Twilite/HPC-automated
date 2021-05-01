@@ -1,7 +1,7 @@
 __Don't__ deploy at production site (they hardly function)
 # Introduction
 Environment: CentOS/EL 7.5  
-This repo plan to automate workflows in HPC (High-perf Computing):
+This repo plan to automate maintenance routines in HPC (High-perf Computing):
 - dnsmasq
 - chrony
 - openldap
