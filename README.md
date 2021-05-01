@@ -6,6 +6,7 @@ This repo plan to automate maintenance routines in HPC (High-perf Computing):
 - chrony
 - openldap-clients/servers
 - httpd
+- nfs-utils
 - gcc-c++
 - [slurm](https://github.com/SchedMD/slurm)
 - manage services by systemctl
