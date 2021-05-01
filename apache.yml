@@ -1,32 +1,41 @@
 ---
 - name: Check apache2 version 
   when: 
-  tags: consistency
+  tags: consistency, httpd
 
 - name: Install apache2
   package: name={{ httpd_pkg }} state=present
   when: 
-  tags: dependency
+  tags: dep, httpd
 
 - name: Reinstall apache2
   package: name={{ httpd_pkg }} state=present
   when: 
-  tags: refresh
+  tags: rein, httpd
 
 - name: Downgrade apache2
   package: name={{ httpd_pkg }} state=present allow_downgrade=true
   when: ansible_facts.packages['httpd'][0].version > {{ httpd_pkg }}
-  tags: brk-dependency
+  tags: dg, httpd
 
 - name: Upgrade apache2
   package: name={{ httpd_pkg }} state=present allow_downgrade=false
   when: ansible_facts.packages['httpd'][0].version < {{ httpd_pkg }}
-  tags: upgrade
+  tags: ug, httpd
+
+
 
 - name: Ensure apache2 up and enabled
   systemd: name=httpd state=started enabled=yes
-  tags: up-service
+  tags: up, httpd
+
+- name: Reload apache2 service
+  systemd: name=httpd 
+  tags: reload, httpd
+
+
 
 - name: Configure apache2
-  
+  vars: 
+  roles:
   tags: soft-conf
