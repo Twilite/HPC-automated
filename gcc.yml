@@ -1,14 +1,15 @@
 ---
 - name: Check gcc version 
   when: 
-  tags: consistency
+  tags: consistency, compile
 
 - name: Downgrade gcc
   package: name={{ gcc_pkg }} state=present allow_downgrade=true
   when: ansible_facts.packages['dns'][0].version > {{ gcc_pkg }}
-  tags: brk-dependency
+  tags: dg, compile
 
-- name: Upgrade dnsmasq
+- name: Upgrade gcc
   package: name={{ dns_pkg }} state=present allow_downgrade=false
   when: ansible_facts.packages['dns'][0].version < {{ gcc_pkg }}
-  tags: upgrade
+  tags: ug, compile
+  
