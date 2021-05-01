@@ -9,7 +9,7 @@ This repo plan to automate maintenance routines in HPC (High-perf Computing):
 - httpd
 
 # Usage
-`ansible-playbook -C target.yml`, It's always recommended to add the "check" `-C` flag.
+`ansible-playbook -C target.yml` to first test possible outcome, always recommended to add the "check" `-C` flag.
 # License
 MIT
 
