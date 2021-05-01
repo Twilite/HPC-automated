@@ -4,9 +4,11 @@ Environment: CentOS/EL 7.5
 This repo plan to automate maintenance routines in HPC (High-perf Computing):
 - dnsmasq
 - chrony
-- openldap
-- slurm
+- openldap-clients/servers
 - httpd
+- gcc-c++
+- [slurm](https://github.com/SchedMD/slurm)
+- manage services by systemctl
 
 # Usage
 `ansible-playbook -C target.yml` to first test possible outcome, always recommended to add the "check" `-C` flag.
