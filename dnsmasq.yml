@@ -1,36 +1,36 @@
 ---
 - name: Check dnsmasq version 
   when: 
-  tags: consistency
+  tags: consistency, dns
 
 - name: Install dnsmasq
   package: name={{ dns_pkg }} state=present
   when: 
-  tags: dependency
+  tags: dep, dns
 
 - name: Reinstall dnsmasq
   package: name={{ dns_pkg }} state=present
   when: 
-  tags: refresh
+  tags: rein, dns
 
 - name: Downgrade dnsmasq
   package: name={{ dns_pkg }} state=present allow_downgrade=true
   when: ansible_facts.packages['dns'][0].version > {{ dns_pkg }}
-  tags: brk-dependency
+  tags: dg, dns
 
 - name: Upgrade dnsmasq
   package: name={{ dns_pkg }} state=present allow_downgrade=false
   when: ansible_facts.packages['dns'][0].version < {{ dns_pkg }}
-  tags: upgrade
+  tags: ug, dns
 
 - name: Ensure dnsmasq up and enabled
   systemd: name=dnsmasq state=started enabled=yes
-  tags: up-service
+  tags: up, dns
 
 - name: Configure dnsmasq
   roles:
     - dnsmasq
   vars: 
-  tags: soft-conf
+  tags: dnsserver-conf
     
     
