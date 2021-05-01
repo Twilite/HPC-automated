@@ -1,7 +1,7 @@
 __Don't__ deploy at production site (they hardly function)
 # Introduction
 Environment: CentOS/EL 7.5  
-This repo plan to automate maintenance routines in HPC (High-perf Computing):
+This repo plans to automate maintenance routines of HPC (High-perf Computing):
 - dnsmasq
 - chrony
 - openldap-clients/servers
@@ -14,5 +14,4 @@ This repo plan to automate maintenance routines in HPC (High-perf Computing):
 # Usage
 `ansible-playbook -C target.yml` to first test possible outcome, always recommended to add the "check" `-C` flag.
 # License
-MIT
-
+Playbooks subject to MIT license.
