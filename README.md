@@ -1,5 +1,5 @@
 __Don't__ deploy at production site (they hardly function)
-# Introduction
+## Introduction
 Environment: CentOS/EL 7.5  
 This repo plans to automate maintenance routines of HPC (High-perf Computing):
 - dnsmasq
@@ -11,7 +11,7 @@ This repo plans to automate maintenance routines of HPC (High-perf Computing):
 - [slurm](https://github.com/SchedMD/slurm)
 - manage services by systemctl
 
-# Usage
+## Usage
 `ansible-playbook -C target.yml` to first test possible outcome, always recommended to add the "check" `-C` flag.
-# License
+## License
 Playbooks subject to MIT license.
