@@ -25,6 +25,10 @@
 
 
 
+- name: Check apache2 daemon status
+  systemd: name=httpd
+  tags: isup, httpd
+  
 - name: Ensure apache2 up and enabled
   systemd: name=httpd state=started enabled=yes
   tags: up, httpd
