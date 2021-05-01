@@ -1,31 +1,31 @@
 ---
 - name: Check chrony version 
   when: 
-  tags: consistency
+  tags: consistency, ntp
 
 - name: Install chrony
   package: name={{ chrony_pkg }} state=present
   when: 
-  tags: dependency
+  tags: dep, ntp
 
 - name: Reinstall chrony
   package: name={{ chrony_pkg }} state=present
   when: 
-  tags: refresh
+  tags: rein, ntp
 
 - name: Downgrade chrony
   package: name={{ chrony_pkg }} state=present allow_downgrade=true
   when: ansible_facts.packages['chrony'][0].version > {{ chrony_pkg }}
-  tags: brk-dependency
+  tags: dg, ntp
 
 - name: Upgrade chrony
   package: name={{ chrony_pkg }} state=present allow_downgrade=false
   when: ansible_facts.packages['chrony'][0].version < {{ chrony_pkg }}
-  tags: upgrade
+  tags: ug, ntp
 
 - name: Ensure chrony up and enabled
   systemd: name=chronyd state=started enabled=yes
-  tags: up-service
+  tags: up, ntp
 
 - name: Configure chronyd
   roles:
@@ -40,7 +40,7 @@
     chrony_config_driftfile: /var/lib/chrony/drift
     chrony_makestep_threshold: 5
     chrony_makestep_limit: 3
-  tags: soft-conf
+  tags: ntpd-conf
 
 - name: Configure chronyc
   roles:
@@ -50,4 +50,4 @@
     chrony_config_driftfile: /var/lib/chrony/drift
     chrony_makestep_threshold: 5
     chrony_makestep_limit: 3
-  tags: soft-conf
+  tags: ntp-conf
